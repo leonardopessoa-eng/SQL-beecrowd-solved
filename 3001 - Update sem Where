@@ -1,0 +1,20 @@
+WITH table1 AS (
+    
+    SELECT
+		id,
+		name,
+		type,
+		CASE
+            WHEN type = 'A' THEN 20.0
+            WHEN type = 'B' THEN 70.0
+            WHEN type = 'C' THEN 530.5
+        END AS price
+    FROM products
+
+)
+
+SELECT 
+	name,
+	price
+FROM table1
+ORDER BY type ASC, id DESC
