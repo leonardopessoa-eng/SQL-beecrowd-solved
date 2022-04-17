@@ -1,0 +1,14 @@
+WITH podium_demoted AS (
+    
+    SELECT
+		CASE 
+			WHEN position IN (1,2,3) THEN CONCAT('Podium: ', team)
+			WHEN position IN (SELECT (MAX(position)-1) FROM league) THEN CONCAT('Demoted: ', team)
+			WHEN position IN (SELECT MAX(position) FROM league) THEN CONCAT('Demoted: ', team)
+		END AS name
+    FROM league
+	WHERE position IN (1, 2, 3, (SELECT (MAX(position)-1) FROM league), (SELECT MAX(position) FROM league))
+
+)
+
+SELECT * FROM podium_demoted
