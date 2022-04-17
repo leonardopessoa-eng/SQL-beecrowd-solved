@@ -1,0 +1,10 @@
+WITH final_table AS (
+    
+    SELECT
+        name,
+        CAST(EXTRACT(DAY FROM payday) as int) as day
+    FROM loan
+    
+)
+
+SELECT * FROM final_table
