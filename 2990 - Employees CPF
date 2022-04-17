@@ -1,0 +1,15 @@
+WITH final_table AS (
+	
+	SELECT
+		cpf,
+		enome,
+		dnome
+	FROM empregados	
+	JOIN departamentos 
+	ON departamentos.dnumero = empregados.dnumero
+	WHERE cpf NOT IN (SELECT cpf_emp FROM trabalha) or cpf_gerente NOT IN (SELECT cpf_emp FROM trabalha)
+
+)
+
+SELECT * FROM final_table
+ORDER BY CPF
