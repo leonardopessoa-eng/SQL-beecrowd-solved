@@ -1,0 +1,55 @@
+WITH table1 AS (
+
+	SELECT 
+		operations.id, 
+		client_id, 
+		month, 
+		profit, 
+		sum(profit) over (partition by client_id) as amount,
+		sum(profit) over (partition by client_id order by month) as cumulativo,
+		count(month) over (partition by client_id) as total_month
+	FROM operations
+
+),
+
+table2 AS (
+
+	SELECT 
+		clients.id,
+		name, 
+		investment, 
+		month as month_of_payback, 
+		(cumulativo-investment) as "return"
+	FROM clients
+	INNER JOIN table1
+	ON clients.id = table1.client_id
+	WHERE cumulativo >= investment
+	
+),
+
+table3 AS (
+
+	SELECT	
+		name, 
+		investment, 
+		month_of_payback, 
+		"return",
+		min(month_of_payback) over (partition by id) as month_of_payback_novo		
+	FROM table2
+	
+),
+
+final_result AS (
+
+	SELECT	
+		name, 
+		investment, 
+		month_of_payback_novo, 
+		"return" 
+	FROM table3
+	WHERE month_of_payback = month_of_payback_novo
+
+)
+
+SELECT * FROM final_result
+ORDER BY "return" DESC
