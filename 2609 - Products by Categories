@@ -1,0 +1,13 @@
+WITH final_table AS (
+    
+    SELECT 
+        categories.name,
+        SUM(amount) as "sum"
+    FROM categories
+    INNER JOIN products
+    ON products.id_categories = categories.id
+    GROUP BY categories.name
+
+)
+    
+SELECT * FROM final_table
