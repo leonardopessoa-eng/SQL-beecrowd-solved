@@ -1,0 +1,27 @@
+WITH Richard AS(
+    
+    SELECT 
+        life_registry.name,
+        omega
+    FROM life_registry
+    INNER JOIN dimensions
+    ON dimensions.id = life_registry.dimensions_id
+    WHERE life_registry.name LIKE 'Richard%' and dimensions.name IN('C875','C774')
+    
+),
+
+N_factor AS(
+    
+    SELECT 
+        Richard.name,
+        omega,
+       (omega*1.618) as [The N Factor]
+    FROM Richard
+    
+)
+
+SELECT 
+    N_factor.name,
+	[The N Factor]
+FROM N_factor
+ORDER BY omega ASC
